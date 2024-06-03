@@ -1,7 +1,5 @@
 const labelModels = require('../../models/labelModels');
 const dataVideo = require('../../models/dataVideoModels');
-const jwt = require('jsonwebtoken');
-const Blacklist = require('../../models/blacklistModels');
 
 async function getCraftVideo(request, h) {
     const token = request.headers.authorization;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2024 at 10:14 PM
+-- Generation Time: Jun 03, 2024 at 07:31 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `rc_db`
+-- Database: `recratify`
 --
 
 -- --------------------------------------------------------
@@ -32,6 +32,28 @@ CREATE TABLE `blacklist` (
   `token` text NOT NULL,
   `expiresAt` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `craft_posts`
+--
+
+CREATE TABLE `craft_posts` (
+  `postId` varchar(11) NOT NULL,
+  `userId` varchar(11) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `URL_Image` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `craft_posts`
+--
+
+INSERT INTO `craft_posts` (`postId`, `userId`, `title`, `URL_Image`, `description`, `created_at`) VALUES
+('GRWHk_ZQWu4', 'cKjFks44HTb', 'Test', 'https://storage.googleapis.com/craft-storage-recratify/1717435809674_non-cancer-2.png', 'HALOOOOO DUNIAAAAA WOIIIII 1231251353', '2024-06-03 17:30:10');
 
 -- --------------------------------------------------------
 
@@ -327,6 +349,17 @@ INSERT INTO `label` (`id`, `label_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `post_tags`
+--
+
+CREATE TABLE `post_tags` (
+  `postId` varchar(11) NOT NULL,
+  `label_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -360,6 +393,13 @@ ALTER TABLE `blacklist`
   ADD UNIQUE KEY `token` (`token`) USING HASH;
 
 --
+-- Indexes for table `craft_posts`
+--
+ALTER TABLE `craft_posts`
+  ADD PRIMARY KEY (`postId`),
+  ADD KEY `userId` (`userId`);
+
+--
 -- Indexes for table `data_video`
 --
 ALTER TABLE `data_video`
@@ -379,6 +419,13 @@ ALTER TABLE `favorites`
 --
 ALTER TABLE `label`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `post_tags`
+--
+ALTER TABLE `post_tags`
+  ADD PRIMARY KEY (`postId`,`label_id`),
+  ADD KEY `label_id` (`label_id`);
 
 --
 -- Indexes for table `users`
@@ -401,6 +448,12 @@ ALTER TABLE `blacklist`
 --
 
 --
+-- Constraints for table `craft_posts`
+--
+ALTER TABLE `craft_posts`
+  ADD CONSTRAINT `craft_posts_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `data_video`
 --
 ALTER TABLE `data_video`
@@ -413,6 +466,13 @@ ALTER TABLE `favorites`
   ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`label_id`) REFERENCES `label` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `favorites_ibfk_3` FOREIGN KEY (`Youtube_ID`) REFERENCES `data_video` (`Youtube_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `post_tags`
+--
+ALTER TABLE `post_tags`
+  ADD CONSTRAINT `post_tags_ibfk_2` FOREIGN KEY (`label_id`) REFERENCES `label` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `post_tags_ibfk_3` FOREIGN KEY (`postId`) REFERENCES `craft_posts` (`postId`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

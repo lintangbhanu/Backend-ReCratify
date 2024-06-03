@@ -2,7 +2,6 @@ const db = require('../config/dbconf');
 const users = require('../models/usersModels');
 const { DataTypes } = require('sequelize');
 const dataVideo = require('../models/dataVideoModels');
-
 const label = require('../models/labelModels');
 
 // favorites table model
