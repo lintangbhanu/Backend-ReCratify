@@ -1,8 +1,19 @@
 const { Storage } = require('@google-cloud/storage');
 const { bucket } = require('../../config/bucketconf');
 const { createPostCraft } = require('../../services/postcraftServices');
+const jwt = require('jsonwebtoken');
+const Blacklist = require('../../models/blacklistModels');
 
 const uploadHandler = async (request, h) => {
+    const token = request.headers.authorization;
+
+    if (!token) {
+        return h.response({
+            status: 'fail',
+            message: 'Token tidak ditemukan'
+        }).code(400);
+    }
+    
     const { payload } = request;
     const file = payload.file;
     const { userId, title, description } = payload;

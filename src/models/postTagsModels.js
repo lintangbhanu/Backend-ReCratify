@@ -24,9 +24,17 @@ const postTags = db.define('postTagsTable', {
     }
 },
 {
-    tableName: 'favorites',
+    tableName: 'post_tags',
     timestamps: false,
 });
 
+postTags.removeAttribute('id');
+
+// set relation
+postTags.belongsTo(postcraft, { foreignKey: 'postId' });
+postcraft.hasMany(postTags, { foreignKey: 'postId' });
+
+postTags.belongsTo(label, { foreignKey: 'label_id' });
+label.hasMany(postTags, { foreignKey: 'label_id' });
 
 module.exports = postTags;

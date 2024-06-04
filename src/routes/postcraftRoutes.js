@@ -1,3 +1,6 @@
+const getAllPostsHandler = require('../handlers/postCraft/allPosts');
+const getPostsByUser = require('../handlers/postCraft/postsByUser');
+const deletePost = require('../handlers/postCraft/deletePost');
 const uploadHandler = require('../handlers/postCraft/uploadHandler');
 
 const postCraftRoutes = [
@@ -14,6 +17,21 @@ const postCraftRoutes = [
         },
         handler: uploadHandler
     },
+    {
+        method: 'DELETE',
+        path: '/posts',
+        handler: deletePost
+    },
+    {
+        method: 'GET',
+        path: '/posts',
+        handler: getAllPostsHandler
+    },
+    {
+        method: 'GET',
+        path: '/posts/{userId}',
+        handler: getPostsByUser
+    }
 ];
 
 module.exports = postCraftRoutes;

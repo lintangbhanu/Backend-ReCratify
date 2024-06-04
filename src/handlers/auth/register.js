@@ -3,7 +3,6 @@ const users = require('../../models/usersModels');
 const registerUser = require('../../services/userServices');
 const { sendRegisterEmail } = require('../../services/emailServices');
 
-
 async function registerUserHandler(request, h) {
     // Validasi data payload
     const schema = Joi.object({
