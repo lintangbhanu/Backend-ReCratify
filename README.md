@@ -68,7 +68,7 @@ To run the API on your local computer, follow these steps:
 
     <details>
     <summary>Databse Exported File</summary>
-    You can use exported file for your database. You can download the exported file [HERE](https://drive.google.com/drive/u/0/folders/17_NQBv8v-1qhB8Oj34ALxPJyDtXi4adK)
+    You can use exported file for your database. You can download the exported file <a href="https://drive.google.com/file/d/1CLu3uy8VBCzewzWjKV1OjT7StjRDzmBn/view?usp=sharing">HERE</a>
     </details>
 
 5.  Start the server
@@ -86,7 +86,7 @@ If you want to test the API, you can use the following endpoints
 
 OR
 
-You can use Postman to test the API. You can download the Postman documentation <a href="https://drive.google.com/file/d/1CLu3uy8VBCzewzWjKV1OjT7StjRDzmBn/view?usp=sharing">HERE</a>
+You can use Postman to test the API. You can download the Postman documentation [HERE]()
 
 <details>
 <summary>User Auth</summary>
