@@ -4,7 +4,7 @@ const users = require('./usersModels');
 
 const postCraft = db.define('postCraftTable', {
     postId: {
-        type: DataTypes.STRING(11), // UUID is 36 characters
+        type: DataTypes.STRING(11),
         primaryKey: true,
     },
     userId: {

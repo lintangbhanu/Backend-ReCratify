@@ -4,7 +4,6 @@ const { DataTypes } = require('sequelize');
 const dataVideo = require('../models/dataVideoModels');
 const label = require('../models/labelModels');
 
-// favorites table model
 const favorites = db.define('favoritesTable', {
     userId: {
         type: DataTypes.STRING,
@@ -41,7 +40,6 @@ const favorites = db.define('favoritesTable', {
 
 favorites.removeAttribute('id');
 
-// set relation
 favorites.belongsTo(users, { foreignKey: 'userId' });
 users.hasMany(favorites, { foreignKey: 'userId' });
 

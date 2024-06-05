@@ -1,7 +1,6 @@
 const db = require('../config/dbconf');
 const { DataTypes } = require('sequelize');
 
-// label table model
 const label = db.define('labelTable', {
     id: {
         type: DataTypes.INTEGER(11),

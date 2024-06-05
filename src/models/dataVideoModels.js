@@ -2,7 +2,6 @@ const db = require('../config/dbconf');
 const { DataTypes } = require('sequelize');
 const label = require('../models/labelModels');
 
-// video data table model
 const dataVideo = db.define('dataVideoTable', {
     Youtube_ID: {
         type: DataTypes.STRING(20),

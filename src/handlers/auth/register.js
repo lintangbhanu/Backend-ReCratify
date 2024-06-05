@@ -4,7 +4,7 @@ const registerUser = require('../../services/userServices');
 const { sendRegisterEmail } = require('../../services/emailServices');
 
 async function registerUserHandler(request, h) {
-    // Validasi data payload
+
     const schema = Joi.object({
         username: Joi.string().alphanum().min(3).max(30).required()
             .messages({
@@ -40,7 +40,6 @@ async function registerUserHandler(request, h) {
     const { username, email, password } = request.payload;
 
     try {
-        // cek apakah username sudah ada
         const existingUser = await users.findOne({ where: { username } });
 
         if (existingUser) {
@@ -50,7 +49,6 @@ async function registerUserHandler(request, h) {
             }).code(400);
         }
 
-        // cek apakah email sudah terdaftar
         const existingEmail = await users.findOne({ where: { email } });
         
         if (existingEmail) {
@@ -62,7 +60,6 @@ async function registerUserHandler(request, h) {
 
         const registerData = await registerUser(username, email, password);
 
-        // cek apakah registrasi berhasil
         if (registerData) {
             await sendRegisterEmail(email);
             return h.response({

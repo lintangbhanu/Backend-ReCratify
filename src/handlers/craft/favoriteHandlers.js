@@ -2,21 +2,21 @@ const favorites = require('../../models/favModels');
 const users = require('../../models/usersModels');
 const dataVideo = require('../../models/dataVideoModels');
 const labelModels = require('../../models/labelModels');
+const verifyToken = require('../../middleware/authentication');
+
 
 async function getFavorite(request, h) {
-    const token = request.headers.authorization;
-
-    if (!token) {
+    const userData = await verifyToken(request);
+    if (!userData) {
         return h.response({
             status: 'fail',
-            message: 'Token tidak ditemukan'
-        }).code(400);
+            message: 'Invalid or missing token'
+        }).code(401);
     }
 
     const { userId } = request.params;
 
     try {
-        // get favorites data by user id
         const queryFavorite = await favorites.findAll({
             attributes: [],
             include: [
@@ -38,7 +38,6 @@ async function getFavorite(request, h) {
             ]
         });
 
-        // mapping data
         const favoriteData = queryFavorite.map(data => {
             return {
                 Youtube_ID: data.dataVideoTable.Youtube_ID,
@@ -51,7 +50,6 @@ async function getFavorite(request, h) {
             };
         });
 
-        // checking query result 
         if (favoriteData.length === 0) {
             return h.response({
                 status: 'fail',
@@ -72,18 +70,17 @@ async function getFavorite(request, h) {
 }
 
 async function addFavorite(request, h) {
-    const token = request.headers.authorization;
-
-    if (!token) {
+    const userData = await verifyToken(request);
+    if (!userData) {
         return h.response({
             status: 'fail',
-            message: 'Token tidak ditemukan'
-        }).code(400);
+            message: 'Invalid or missing token'
+        }).code(401);
     }
+
     const { userId, label, Youtube_ID } = request.payload;
 
     try {
-        // user validation
         const userCheck = await users.findOne({
             where: {
                 userId: userId
@@ -97,7 +94,6 @@ async function addFavorite(request, h) {
             }).code(400);
         }
 
-        // video data validation
         const videoData = await dataVideo.findOne({
             attributes: ['Youtube_ID', 'label_id'],
             include: {
@@ -119,7 +115,6 @@ async function addFavorite(request, h) {
             }).code(400);
         }
 
-        // validate whether the data is already in the favorite table
         const checkFavoriteData = await favorites.findOne({
             attributes: ['userId', 'Youtube_ID'],
             include: [
@@ -170,18 +165,17 @@ async function addFavorite(request, h) {
 }
 
 async function deleteFavorite(request, h) {
-    const token = request.headers.authorization;
-
-    if (!token) {
+    const userData = await verifyToken(request);
+    if (!userData) {
         return h.response({
             status: 'fail',
-            message: 'Token tidak ditemukan'
-        }).code(400);
+            message: 'Invalid or missing token'
+        }).code(401);
     }
+
     const { userId, label, Youtube_ID } = request.payload;
 
     try {
-        // validate whether the request data exists in the table
         const checkFavoriteData = await favorites.findOne({
             attributes: ['userId', 'Youtube_ID'],
             include: [

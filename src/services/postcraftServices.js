@@ -4,7 +4,6 @@ const { nanoid } = require('nanoid');
 async function createPostCraft(userId, title, urlImage, description) {
     const id = nanoid(11);
 
-    // Insert data into the postCraft table
     const queryData = await postCraft.create({
         postId: id,
         userId: userId,
@@ -14,7 +13,6 @@ async function createPostCraft(userId, title, urlImage, description) {
         created_at: new Date()
     });
 
-    // Check if query was successful
     if (queryData) {
         return queryData;
     } else {
@@ -29,7 +27,6 @@ async function deletePostCraft(postId) {
         }
     });
 
-    // Check if query was successful
     if (queryDelete) {
         return queryDelete;
     } else {
@@ -37,7 +34,4 @@ async function deletePostCraft(postId) {
     }
 }
 
-module.exports = {
-    createPostCraft,
-    deletePostCraft
-};
+module.exports = {createPostCraft, deletePostCraft};

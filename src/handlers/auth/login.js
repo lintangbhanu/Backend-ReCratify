@@ -31,10 +31,8 @@ async function loginUserHandler(request, h) {
     const { username, password } = request.payload;
 
     try {
-        // Cari user berdasarkan username
         const user = await users.findOne({ where: { username } });
 
-        // Jika user tidak ditemukan
         if (!user) {
             return h.response({
                 error: true,
@@ -42,10 +40,8 @@ async function loginUserHandler(request, h) {
             }).code(401);
         }
 
-        // Verifikasi password
         const passwordMatch = await bcrypt.compare(password, user.password);
 
-        // Jika password tidak cocok
         if (!passwordMatch) {
             return h.response({
                 error: true,
@@ -53,10 +49,8 @@ async function loginUserHandler(request, h) {
             }).code(401);
         }
 
-        // Generate token
         const token = generateToken({ id: user.userId, name: user.name });
 
-        // Mengembalikan respons dengan token
         return h.response({
             error: false,
             message: 'Login berhasil',

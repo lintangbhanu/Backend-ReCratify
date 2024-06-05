@@ -1,47 +1,42 @@
 const postCraft = require('../../models/postcraftModels');
 const users = require('../../models/usersModels');
-const jwt = require('jsonwebtoken');
-const Blacklist = require('../../models/blacklistModels');
+const verifyToken = require('../../middleware/authentication');
 
-async function getPostsByUser(request, h) {
-    const token = request.headers.authorization;
-
-    if (!token) {
+async function getAllPosts(request, h) {
+    const userData = await verifyToken(request);
+    if (!userData) {
         return h.response({
             status: 'fail',
-            message: 'Token tidak ditemukan'
-        }).code(400);
+            message: 'Invalid or missing token'
+        }).code(401);
     }
 
-    const { userId } = request.params;
-
     try {
-        const postsByUser = await postCraft.findAll({
+        const posts = await postCraft.findAll({
             include: {
                 model: users,
                 attributes: ['username']
-            },
-            where: {
-                userId: userId
             }
         });
 
-        const username = postsByUser[0].usersTable.username;
-
-        const result = postsByUser.map(data => {
+        const result = posts.map(data => {
             return {
                 postId: data.postId,
+                userId: data.userId,
                 title: data.title,
                 URL_Image: data.URL_Image,
                 description: data.description,
-                createdAt: data.created_at,
+                createdAt: data.createdAt,
+                updatedAt: data.updatedAt,
+                User: {
+                    username: data.usersTable.username
+                }
             }
         });
 
         return h.response({
             status: 'success',
-            message: `Successfully get craft posts by user: ${username}!`,
-            userId: userId,
+            message: 'Berhasil mengambil semua data postingan karya!',
             data: result
         }).code(200);
     } catch (error) {
@@ -52,4 +47,4 @@ async function getPostsByUser(request, h) {
     }
 }
 
-module.exports = getPostsByUser;
+module.exports = getAllPosts;

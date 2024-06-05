@@ -7,7 +7,7 @@ const storage = new Storage({
     projectId: 'recratify',
 });
 
-const bucketName = 'craft-storage-recratify'; // Ganti dengan nama bucket Anda
+const bucketName = 'craft-storage-recratify'; 
 const bucket = storage.bucket(bucketName);
 
 module.exports = { bucket };

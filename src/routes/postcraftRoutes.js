@@ -1,35 +1,35 @@
-const getAllPostsHandler = require('../handlers/postCraft/allPosts');
-const getPostsByUser = require('../handlers/postCraft/postsByUser');
-const deletePost = require('../handlers/postCraft/deletePost');
-const uploadHandler = require('../handlers/postCraft/uploadHandler');
+const getAllPostsHandler = require('../handlers/publish/allPosts');
+const getPostsByUser = require('../handlers/publish/userPosts');
+const deletePost = require('../handlers/publish/deletePosts');
+const postingHandler = require('../handlers/publish/Posting');
 
 const postCraftRoutes = [
     {
         method: 'POST',
-        path: '/upload',
+        path: '/publish',
         options: {
             payload: {
                 output: 'stream',
                 parse: true,
                 multipart: true,
-                maxBytes: 10 * 1024 * 1024, // 10 MB
+                maxBytes: 10 * 1024 * 1024,
             },
         },
-        handler: uploadHandler
+        handler: postingHandler
     },
     {
         method: 'DELETE',
-        path: '/posts',
+        path: '/publish',
         handler: deletePost
     },
     {
         method: 'GET',
-        path: '/posts',
+        path: '/publish',
         handler: getAllPostsHandler
     },
     {
         method: 'GET',
-        path: '/posts/{userId}',
+        path: '/publish/{userId}',
         handler: getPostsByUser
     }
 ];

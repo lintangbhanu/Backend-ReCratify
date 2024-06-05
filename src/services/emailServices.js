@@ -3,7 +3,6 @@ require("dotenv").config();
 
 async function sendRegisterEmail(email) {
     try {
-        // Konfigurasi transporter Nodemailer
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
@@ -14,7 +13,6 @@ async function sendRegisterEmail(email) {
             },
         });
 
-        // Opsi email
         let mailOptions = {
             from: process.env.APP_USER,
             to: email,
@@ -22,10 +20,8 @@ async function sendRegisterEmail(email) {
             text: `We are glad to have you here and want you to make the most out of your experience with Re-Cratify.`
         };
 
-        // Kirim email
         await transporter.sendMail(mailOptions);
 
-        // Log tindakan untuk tujuan debugging
         console.log(`This Email for user who has subscribe ${email}`);
     } catch (error) {
         console.error(`Error in sendRegisterEmail: ${error.message}`);
@@ -33,10 +29,8 @@ async function sendRegisterEmail(email) {
     }
 }
 
-
 async function sendResetEmail(email, resetCode) {
     try {
-        // Konfigurasi transporter Nodemailer
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
@@ -47,7 +41,6 @@ async function sendResetEmail(email, resetCode) {
             },
         });
 
-        // Opsi email
         let mailOptions = {
             from: process.env.APP_USER,
             to: email,
@@ -55,10 +48,8 @@ async function sendResetEmail(email, resetCode) {
             text: `Kode reset Anda adalah: ${resetCode}. Kode ini berlaku selama 1 jam.`
         };
 
-        // Kirim email
         await transporter.sendMail(mailOptions);
 
-        // Log tindakan untuk tujuan debugging
         console.log(`Reset code generated for ${email}: ${resetCode}`);
     } catch (error) {
         console.error(`Error in sendResetEmail: ${error.message}`);

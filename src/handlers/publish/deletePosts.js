@@ -1,17 +1,15 @@
 const { bucket } = require('../../config/bucketconf');
 const { URL } = require('url');
-const deletePostCraft = require('../../services/postcraftServices');
-const jwt = require('jsonwebtoken');
-const Blacklist = require('../../models/blacklistModels');
+const verifyToken = require('../../middleware/authentication');
+const { deletePostCraft } = require('../../services/postcraftServices');
 
 async function deletePost(request, h) {
-    const token = request.headers.authorization;
-
-    if (!token) {
+    const userData = await verifyToken(request);
+    if (!userData) {
         return h.response({
             status: 'fail',
-            message: 'Token tidak ditemukan'
-        }).code(400);
+            message: 'Invalid or missing token'
+        }).code(401);
     }
 
     const { postId, URL_Image } = request.payload;
@@ -23,10 +21,8 @@ async function deletePost(request, h) {
     const file = bucket.file(objectName);
 
     try {
-        // delete post data from postCraft
         const queryDestroy = await deletePostCraft(postId);
 
-        // validation
         if (queryDestroy.length === 0) {
             return h.response({
                 status: 'fail',
@@ -34,7 +30,6 @@ async function deletePost(request, h) {
             }).code(400);
         }
 
-        // delete image object from bucket
         await file.delete();
         console.log(`Object '${objectName}' successfully deleted from bucket!`);
 

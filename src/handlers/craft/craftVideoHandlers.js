@@ -1,19 +1,19 @@
 const labelModels = require('../../models/labelModels');
 const dataVideo = require('../../models/dataVideoModels');
+const verifyToken = require('../../middleware/authentication');
 
 async function getCraftVideo(request, h) {
-    const token = request.headers.authorization;
-
-    if (!token) {
+    const userData = await verifyToken(request);
+    if (!userData) {
         return h.response({
             status: 'fail',
-            message: 'Token tidak ditemukan'
-        }).code(400);
+            message: 'Invalid or missing token'
+        }).code(401);
     }
+
     const { label } = request.params;
 
     try {
-        // get data video
         const queryVideo = await dataVideo.findAll({
             attributes: ['Youtube_ID', 'title', 'URL_Thumbnail', 'URL_Video'],
             include: {
@@ -25,7 +25,6 @@ async function getCraftVideo(request, h) {
             }
         });
 
-        // mapping data
         const resultVideo = queryVideo.map(data => {
             return {
                 Youtube_ID: data.Youtube_ID,
@@ -37,7 +36,6 @@ async function getCraftVideo(request, h) {
             };
         });
 
-        // checking query result
         if (resultVideo.length === 0) {
             return h.response({
                 status: 'fail',
