@@ -63,7 +63,7 @@ To run the API on your local computer, follow these steps:
 4.  create your own database like this
 
     <a href="">
-      <img src="https://drive.google.com/file/d/1ceKT_Q2JSc56rmF6xQgX-uHeB_0RL2rs/view?usp=sharing" />
+      <img src="https://drive.google.com/file/d/1ceKT_Q2JSc56rmF6xQgX-uHeB_0RL2rs" />
     </a>
 
     <details>
