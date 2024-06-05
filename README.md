@@ -68,7 +68,7 @@ To run the API on your local computer, follow these steps:
 
     <details>
     <summary>Databse Exported File</summary>
-    You can use exported file for your database. You can download the exported file [HERE](https://drive.google.com/file/d/1CLu3uy8VBCzewzWjKV1OjT7StjRDzmBn/view?usp=sharing)
+    You can use exported file for your database. You can download the exported file [HERE](https://drive.google.com/drive/u/0/folders/17_NQBv8v-1qhB8Oj34ALxPJyDtXi4adK)
     </details>
 
 5.  Start the server
