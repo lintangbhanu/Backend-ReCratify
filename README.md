@@ -86,7 +86,7 @@ If you want to test the API, you can use the following endpoints
 
 OR
 
-You can use Postman to test the API. You can download the Postman documentation [HERE](https://documenter.getpostman.com/view/)
+You can use Postman to test the API. You can download the Postman documentation <a href="https://drive.google.com/file/d/1CLu3uy8VBCzewzWjKV1OjT7StjRDzmBn/view?usp=sharing">HERE</a>
 
 <details>
 <summary>User Auth</summary>
