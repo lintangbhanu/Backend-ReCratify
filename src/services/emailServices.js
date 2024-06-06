@@ -9,7 +9,7 @@ async function sendRegisterEmail(email) {
             secure: false,
             auth: {
                 user: process.env.APP_USER,
-                pass: process.env.APP_PASS
+                pass: "xdgr fldb hcev pjxp"
             },
         });
 
@@ -37,7 +37,7 @@ async function sendResetEmail(email, resetCode) {
             secure: false,
             auth: {
                 user: process.env.APP_USER,
-                pass: process.env.APP_PASS
+                pass: "xdgr fldb hcev pjxp"
             },
         });
 
