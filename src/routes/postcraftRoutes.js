@@ -31,7 +31,7 @@ const postCraftRoutes = [
         method: 'GET',
         path: '/publish/{userId}',
         handler: getPostsByUser
-    }
+    },
 ];
 
 module.exports = postCraftRoutes;

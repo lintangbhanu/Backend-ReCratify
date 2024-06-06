@@ -1,6 +1,6 @@
 const postCraft = require('../../models/postcraftModels');
 const users = require('../../models/usersModels');
-const verifyToken = require ('../../middleware/authentication')
+const verifyToken = require('../../middleware/authentication');
 
 async function getPostsByUser(request, h) {
     const userData = await verifyToken(request);
@@ -24,7 +24,15 @@ async function getPostsByUser(request, h) {
             }
         });
 
+        if (postsByUser.length === 0) {
+            return h.response({
+                status: 'fail',
+                message: `No posts found for user with ID: ${userId}`
+            }).code(404);
+        }
+
         const username = postsByUser[0].usersTable.username;
+        const totalPosts = postsByUser.length;
 
         const result = postsByUser.map(data => {
             return {
@@ -38,8 +46,9 @@ async function getPostsByUser(request, h) {
 
         return h.response({
             status: 'success',
-            message: `Successfully get craft posts by user: ${username}!`,
+            message: `Successfully retrieved craft posts by user: ${username}!`,
             userId: userId,
+            totalPosts: totalPosts,
             data: result
         }).code(200);
     } catch (error) {
@@ -50,4 +59,4 @@ async function getPostsByUser(request, h) {
     }
 }
 
-module.exports = getPostsByUser
+module.exports = getPostsByUser;
