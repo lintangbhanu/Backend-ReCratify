@@ -4,6 +4,8 @@ const { logoutUserHandler } = require("../handlers/auth/logout");
 const { forgotPasswordHandler } = require("../handlers/user/forgotPassword");
 const { verifyResetCodeHandler } = require("../handlers/user/verifyResetCode");
 const { resetPasswordHandler } = require("../handlers/user/resetPassword");
+const { changePasswordHandler } = require("../handlers/user/changePassword");
+
 
 const authRoutes = [
     {
@@ -20,6 +22,11 @@ const authRoutes = [
         method: 'POST',
         path: '/forgotpassword',
         handler: forgotPasswordHandler
+    },
+    {
+        method: 'POST',
+        path: '/changepassword',
+        handler:changePasswordHandler
     },
     {
         method: 'POST',

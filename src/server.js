@@ -6,7 +6,7 @@ const postCraft = require('./routes/postCraftRoutes');
 const init = async () => {
     const server = Hapi.server({
         port: process.env.SERVER_PORT,
-        host: '0.0.0.0',
+        host: 'localhost',
         routes: {
             cors: {
                 origin: ['*'],
