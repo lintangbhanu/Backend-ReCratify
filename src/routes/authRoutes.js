@@ -24,7 +24,7 @@ const authRoutes = [
         handler: forgotPasswordHandler
     },
     {
-        method: 'POST',
+        method: 'PUT',
         path: '/changepassword',
         handler:changePasswordHandler
     },

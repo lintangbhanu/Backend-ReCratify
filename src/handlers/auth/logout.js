@@ -1,23 +1,27 @@
-const usersModel = require('../../models/usersModels');
+const users = require('../../models/usersModels');
 
 async function logoutUserHandler(request, h) {
     try {
-        const userId = request.payload.userId;
-        const user = await usersModel.getUserById(userId);
+        // Dapatkan userId dari permintaan
+        const { userId } = request.payload;
+
+        // Lakukan pengecekan apakah pengguna dengan userId yang diberikan ada di database
+        const user = await users.findOne({ where: { userId } });
 
         if (!user) {
             return h.response({
-                status: 'error',
-                message: 'User not found'
+                error: true,
+                message: 'Pengguna tidak ditemukan'
             }).code(404);
         }
 
-        const userName = user.username;
-
+        // Lakukan proses logout di sini, misalnya, menandai pengguna sebagai tidak aktif
+        // Misalnya:
+        // await users.update({ loggedIn: false }, { where: { userId } });
 
         return h.response({
-            status: 'success',
-            message: `Mau Kemana sih, ${userName}!`
+            error: false,
+            message: `Selamat tinggal ${user.username}`
         }).code(200);
     } catch (error) {
         console.error('Error logging out user:', error);

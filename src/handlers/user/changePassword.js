@@ -14,13 +14,14 @@ async function changePasswordHandler(request, h) {
     }
 
     const schema = Joi.object({
-        userId: Joi.number().integer().required()
+        userId: Joi.string().required()
             .messages({
-                'number.base': 'ID user harus berupa angka!',
+                'string.empty': 'ID user harus diisi!',
                 'any.required': 'ID user harus diisi!'
             }),
         oldPassword: Joi.string().required()
             .messages({
+                'string.empty': 'Password lama harus diisi!',
                 'any.required': 'Password lama harus diisi!'
             }),
         newPassword: Joi.string().min(6).required()
@@ -47,7 +48,7 @@ async function changePasswordHandler(request, h) {
     const { userId, oldPassword, newPassword } = request.payload;
 
     try {
-        const user = await users.findOne({ where: { id: userId } });
+        const user = await users.findOne({ where: { userId } });
 
         if (!user) {
             return h.response({
