@@ -3,17 +3,17 @@ const users = require('../../models/usersModels');
 const verifyToken = require('../../middleware/authentication');
 
 async function getPostsByUser(request, h) {
-    const userData = await verifyToken(request);
-    if (!userData) {
-        return h.response({
-            status: 'fail',
-            message: 'Invalid or missing token'
-        }).code(401);
-    }
-    
-    const { userId } = request.params;
-
     try {
+        const userData = await verifyToken(request);
+        if (!userData) {
+            return h.response({
+                status: 'fail',
+                message: 'Invalid or missing token please re-login'
+            }).code(401);
+        }
+        
+        const userId = userData.id;
+
         const postsByUser = await postCraft.findAll({
             include: {
                 model: users,

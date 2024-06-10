@@ -7,7 +7,7 @@ async function getCraftVideo(request, h) {
     if (!userData) {
         return h.response({
             status: 'fail',
-            message: 'Invalid or missing token'
+            message: 'Invalid or missing token please re-login'
         }).code(401);
     }
 
@@ -28,11 +28,9 @@ async function getCraftVideo(request, h) {
         const resultVideo = queryVideo.map(data => {
             return {
                 Youtube_ID: data.Youtube_ID,
-                Snippet: {
-                    Title: data.title,
-                    URL_Thumbnail: data.URL_Thumbnail,
-                    URL_Video: data.URL_Video
-                }
+                Title: data.title,
+                URL_Thumbnail: data.URL_Thumbnail,
+                URL_Video: data.URL_Video
             };
         });
 
@@ -46,7 +44,7 @@ async function getCraftVideo(request, h) {
         return h.response({
             status: 'success',
             label: label,
-            data: resultVideo
+            videos: resultVideo
         })
         .code(200);
     } catch (error) {

@@ -6,25 +6,22 @@ const { sendRegisterEmail } = require('../../services/emailServices');
 async function registerUserHandler(request, h) {
 
     const schema = Joi.object({
-        username: Joi.string().alphanum().min(3).max(30).required()
+        username: Joi.string().pattern(new RegExp('^[a-zA-Z0-9 ]*$')).min(3).max(30).required()
             .messages({
-                'string.min': 'Username harus memiliki panjang minimal {#limit} karakter!',
-                'string.max': 'Username tidak boleh lebih dari {#limit} karakter!',
-                'any.required': 'Username harus diisi!'
+                'string.pattern.base': 'Username must only contain letters, numbers and spaces!',
+                'string.min': 'Username must be at least {#limit} characters long!',
+                'string.max': 'Username cannot be more than {#limit} characters!',
+                'any.required': 'Username is required!'
             }),
         email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: false } }).required()
             .messages({
-                'string.email': 'Format email tidak valid!',
-                'any.required': 'Email harus diisi!'
+                'string.email': 'Invalid email format!',
+                'any.required': 'Email required!'
             }),
         password: Joi.string().min(6).required()
             .messages({
-                'string.min': 'Password harus memiliki panjang minimal {#limit} karakter!',
-                'any.required': 'Password harus diisi'
-            }),
-        verifyPassword: Joi.valid(Joi.ref('password')).required()
-            .messages({
-                'any.only': 'Password tidak cocok!'
+                'string.min': 'Password must have a minimum length of {#limit} characters!',
+                'any.required': 'Password required'
             })
     });
 
@@ -45,7 +42,7 @@ async function registerUserHandler(request, h) {
         if (existingUser) {
             return h.response({
                 status: 'fail',
-                message: 'Username sudah terdaftar!'
+                message: 'Username has been registered!'
             }).code(400);
         }
 
@@ -54,7 +51,7 @@ async function registerUserHandler(request, h) {
         if (existingEmail) {
             return h.response({
                 status: 'fail',
-                message: 'Email sudah terdaftar!'
+                message: 'Email is registered!'
             }).code(400);
         }
 
@@ -64,12 +61,12 @@ async function registerUserHandler(request, h) {
             await sendRegisterEmail(email);
             return h.response({
                 status: 'success',
-                message: 'Registrasi berhasil dilakukan!'
+                message: 'Registration successful!'
             }).code(200);
         } else {
             return h.response({
                 status: 'fail',
-                message: 'Registrasi gagal dilakukan!'
+                message: 'Registration failed!'
             }).code(400);
         }
     } catch (error) {
@@ -78,4 +75,4 @@ async function registerUserHandler(request, h) {
     }
 }
 
-module.exports = {registerUserHandler};
+module.exports = { registerUserHandler };

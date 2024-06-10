@@ -2,7 +2,7 @@ const postCraft = require('../../models/postcraftModels');
 const users = require('../../models/usersModels');
 const verifyToken = require('../../middleware/authentication');
 
-async function getAllPosts(request, h) {
+async function getPostDetail(request, h) {
     const userData = await verifyToken(request);
     if (!userData) {
         return h.response({
@@ -11,29 +11,37 @@ async function getAllPosts(request, h) {
         }).code(401);
     }
 
+    const postId = request.params.postId;
+
     try {
-        const posts = await postCraft.findAll({
+        const post = await postCraft.findOne({
+            where: { postId },
             include: {
                 model: users,
                 attributes: ['username']
             }
         });
 
-        const result = posts.map(data => {
-            return {
-                postId: data.postId,
-                userId: data.userId,
-                username: data.usersTable.username,
-                title: data.title,
-                URL_Image: data.URL_Image,
-                description: data.description
-            }
-        });
+        if (!post) {
+            return h.response({
+                status: 'fail',
+                message: 'Post not found'
+            }).code(404);
+        }
+
+        const postData = {
+            postId: post.postId,
+            userId: post.userId,
+            username: post.usersTable.username,
+            title: post.title,
+            URL_Image: post.URL_Image,
+            description: post.description
+        };
 
         return h.response({
             status: 'success',
-            message: 'Successfully retrieved all post data!',
-            data: result
+            message: 'Berhasil mengambil detail postingan',
+            data: postData
         }).code(200);
     } catch (error) {
         return h.response({
@@ -43,4 +51,4 @@ async function getAllPosts(request, h) {
     }
 }
 
-module.exports = getAllPosts;
+module.exports = getPostDetail;

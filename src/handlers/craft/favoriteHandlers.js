@@ -6,26 +6,25 @@ const verifyToken = require('../../middleware/authentication');
 
 
 async function getFavorite(request, h) {
-    const userData = await verifyToken(request);
-    if (!userData) {
-        return h.response({
-            status: 'fail',
-            message: 'Invalid or missing token'
-        }).code(401);
-    }
-
-    const { userId } = request.params;
-
     try {
+        const userData = await verifyToken(request);
+
+        if (!userData) {
+            return h.response({
+                status: 'fail',
+                message: 'Invalid or missing token please re-login'
+            }).code(401);
+        }
+
+        const userId = userData.id;
+
         const queryFavorite = await favorites.findAll({
             attributes: [],
             include: [
                 {
                     model: users,
                     attributes: ['userId'],
-                    where: {
-                        userId: userId
-                    }
+                    where: { userId: userId }
                 },
                 {
                     model: labelModels,
@@ -38,27 +37,25 @@ async function getFavorite(request, h) {
             ]
         });
 
-        const favoriteData = queryFavorite.map(data => {
-            return {
-                Youtube_ID: data.dataVideoTable.Youtube_ID,
-                label: data.labelTable.label_name,
-                Snippet: {
-                    Title: data.dataVideoTable.title,
-                    URL_Thumbnail: data.dataVideoTable.URL_Thumbnail,
-                    URL_Video: data.dataVideoTable.URL_Video
-                }
-            };
-        });
+        const favoriteData = queryFavorite.map(data => ({
+            Youtube_ID: data.dataVideoTable.Youtube_ID,
+            label: data.labelTable.label_name,
+            Title: data.dataVideoTable.title,
+            URL_Thumbnail: data.dataVideoTable.URL_Thumbnail,
+            URL_Video: data.dataVideoTable.URL_Video
+        }));
+        
 
         if (favoriteData.length === 0) {
             return h.response({
                 status: 'fail',
-                message: `Data not found!`
+                message: 'Data not found!'
             }).code(400);
         }
 
         return h.response({
             status: 'success',
+            userId: userId,
             favorites: favoriteData
         }).code(200);
     } catch (error) {
@@ -69,18 +66,22 @@ async function getFavorite(request, h) {
     }
 }
 
+
 async function addFavorite(request, h) {
-    const userData = await verifyToken(request);
-    if (!userData) {
-        return h.response({
-            status: 'fail',
-            message: 'Invalid or missing token'
-        }).code(401);
-    }
-
-    const { userId, label, Youtube_ID } = request.payload;
-
     try {
+        const userData = await verifyToken(request);
+        
+        if (!userData) {
+            return h.response({
+                status: 'fail',
+                message: 'Invalid or missing token please re-login'
+            }).code(401);
+        }
+
+        const userId = userData.id;
+        
+        const { label, Youtube_ID } = request.payload;
+
         const userCheck = await users.findOne({
             where: {
                 userId: userId
@@ -117,22 +118,10 @@ async function addFavorite(request, h) {
 
         const checkFavoriteData = await favorites.findOne({
             attributes: ['userId', 'Youtube_ID'],
-            include: [
-                {
-                    model: users,
-                    attributes: [],
-                    where: {
-                        userId: userId
-                    }
-                },
-                {
-                    model: dataVideo,
-                    attributes: [],
-                    where: {
-                        Youtube_ID: Youtube_ID
-                    }
-                }
-            ]
+            where: {
+                userId: userId,
+                Youtube_ID: Youtube_ID
+            }
         });
 
         if (checkFavoriteData) {
@@ -154,7 +143,7 @@ async function addFavorite(request, h) {
                 message: 'Video successfully added to favorites list!'
             }).code(201);
         } else {
-            throw new error('Video failed to be added to favorites list!');
+            throw new Error('Video failed to be added to favorites list!');
         }
     } catch (error) {
         return h.response({
@@ -164,50 +153,34 @@ async function addFavorite(request, h) {
     }
 }
 
+
+
 async function deleteFavorite(request, h) {
-    const userData = await verifyToken(request);
-    if (!userData) {
-        return h.response({
-            status: 'fail',
-            message: 'Invalid or missing token'
-        }).code(401);
-    }
-
-    const { userId, label, Youtube_ID } = request.payload;
-
     try {
+        const userData = await verifyToken(request);
+        if (!userData) {
+            return h.response({
+                status: 'fail',
+                message: 'Invalid or missing token please re-login'
+            }).code(401);
+        }
+
+        const userId = userData.id;
+
+        const { Youtube_ID } = request.payload;
+
         const checkFavoriteData = await favorites.findOne({
-            attributes: ['userId', 'Youtube_ID'],
-            include: [
-                {
-                    model: users,
-                    attributes: [],
-                    where: {
-                        userId: userId
-                    }
-                },
-                {
-                    model: labelModels,
-                    attributes: [],
-                    where: {
-                        label_name: label
-                    }
-                },  
-                {
-                    model: dataVideo,
-                    attributes: [],
-                    where: {
-                        Youtube_ID: Youtube_ID
-                    }
-                }
-            ]
+            where: {
+                userId: userId,
+                Youtube_ID: Youtube_ID
+            }
         });
 
         if (!checkFavoriteData) {
             return h.response({
                 status: 'fail',
-                message: 'Invalid request data!'
-            }).code(400);
+                message: 'Favorite video not found for the user'
+            }).code(404);
         }
 
         const deleteQuery = await favorites.destroy({
@@ -220,10 +193,10 @@ async function deleteFavorite(request, h) {
         if (deleteQuery) {
             return h.response({
                 status: 'success',
-                message: 'Video successfully removed from favorites list!'
-            }).code(201);
+                message: 'Favorite video successfully removed!'
+            }).code(200);
         } else {
-            throw new error('Video failed to be removed from favorites list!');
+            throw new Error('Failed to remove favorite video');
         }
     } catch (error) {
         return h.response({
@@ -233,4 +206,9 @@ async function deleteFavorite(request, h) {
     }
 }
 
-module.exports = { getFavorite, addFavorite, deleteFavorite };
+
+module.exports = {
+    getFavorite,
+    addFavorite,
+    deleteFavorite
+};

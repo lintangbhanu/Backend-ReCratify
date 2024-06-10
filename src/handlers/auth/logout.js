@@ -1,32 +1,48 @@
-const users = require('../../models/usersModels');
+const jwt = require('jsonwebtoken');
+const Blacklist = require('../../models/blacklistModels');
 
 async function logoutUserHandler(request, h) {
+    const token = request.headers['authorization'];
+
+    if (!token) {
+        return h.response({
+            status: 'fail',
+            message: 'Missing token in authorization header'
+        }).code(400);
+    }
+
     try {
-        // Dapatkan userId dari permintaan
-        const { userId } = request.payload;
+        // Cek apakah token sudah ada dalam daftar hitam
+        const blacklistedToken = await Blacklist.findOne({ where: { token } });
 
-        // Lakukan pengecekan apakah pengguna dengan userId yang diberikan ada di database
-        const user = await users.findOne({ where: { userId } });
-
-        if (!user) {
+        if (blacklistedToken) {
+            // Token sudah ada dalam daftar hitam, kembalikan respons berhasil logout
             return h.response({
-                error: true,
-                message: 'Pengguna tidak ditemukan'
-            }).code(404);
+                status: 'success',
+                message: 'Logout successful'
+            }).code(200);
         }
 
-        // Lakukan proses logout di sini, misalnya, menandai pengguna sebagai tidak aktif
-        // Misalnya:
-        // await users.update({ loggedIn: false }, { where: { userId } });
+        // Tetapkan tanggal kadaluwarsa sebagai tanggal saat ini
+        const expiresAt = new Date();
 
+        // Tambahkan token ke dalam daftar hitam dengan tanggal kadaluwarsa saat ini
+        await Blacklist.create({ token, expiresAt });
+        console.log('Token added to blacklist with current date as expiration.');
+
+        // Kembalikan respons berhasil logout
         return h.response({
-            error: false,
-            message: `Selamat tinggal ${user.username}`
+            status: 'success',
+            message: 'Logout successful'
         }).code(200);
+
     } catch (error) {
-        console.error('Error logging out user:', error);
-        return h.response({ status: 'error', message: error.message }).code(500);
+        console.error('Error during logout:', error);
+        return h.response({
+            status: 'fail',
+            message: 'Error occurred during logout'
+        }).code(500);
     }
 }
 
-module.exports = { logoutUserHandler };
+module.exports = {logoutUserHandler};

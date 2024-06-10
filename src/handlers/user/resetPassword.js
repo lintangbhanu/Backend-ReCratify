@@ -13,6 +13,10 @@ async function resetPasswordHandler(request, h) {
             .messages({
                 'string.min': 'Password harus memiliki panjang minimal {#limit} karakter!',
                 'any.required': 'Password harus diisi!'
+            }),
+        resetCode: Joi.string().required()
+            .messages({
+                'any.required': 'Reset code harus diisi!'
             })
     });
 
@@ -25,7 +29,7 @@ async function resetPasswordHandler(request, h) {
         }).code(400);
     }
 
-    const { email, newPassword } = request.payload;
+    const { email, newPassword, resetCode } = request.payload;
 
     try {
         const user = await users.findOne({ where: { email } });
@@ -35,6 +39,13 @@ async function resetPasswordHandler(request, h) {
                 status: 'fail',
                 message: 'User tidak ditemukan'
             }).code(404);
+        }
+
+        if (user.resetCode !== resetCode) {
+            return h.response({
+                status: 'fail',
+                message: 'Reset code tidak valid'
+            }).code(400);
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -53,6 +64,3 @@ async function resetPasswordHandler(request, h) {
 }
 
 module.exports = { resetPasswordHandler };
-
-
-

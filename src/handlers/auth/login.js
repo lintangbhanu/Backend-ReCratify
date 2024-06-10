@@ -6,16 +6,15 @@ const generateToken = require('../../services/tokenServices');
 async function loginUserHandler(request, h) {
 
     const schema = Joi.object({
-        username: Joi.string().alphanum().min(3).max(30).required()
+        email: Joi.string().email().required()
             .messages({
-                'string.min': 'Username harus memiliki panjang minimal {#limit} karakter!',
-                'string.max': 'Username tidak boleh lebih dari {#limit} karakter!',
-                'any.required': 'Username harus diisi!'
+                'string.email': 'Email must be a valid email address!',
+                'any.required': 'Email require!'
             }),
         password: Joi.string().min(6).required()
             .messages({
-                'string.min': 'Password harus memiliki panjang minimal {#limit} karakter!',
-                'any.required': 'Password harus diisi'
+                'string.min': 'Password must have a minimum length of {#limit} characters!',
+                'any.required': 'Password required'
             })
     });
 
@@ -28,15 +27,15 @@ async function loginUserHandler(request, h) {
         }).code(400);
     }
 
-    const { username, password } = request.payload;
+    const { email, password } = request.payload;
 
     try {
-        const user = await users.findOne({ where: { username } });
+        const user = await users.findOne({ where: { email } });
 
         if (!user) {
             return h.response({
                 error: true,
-                message: 'Username atau password salah'
+                message: 'Incorrect email or password'
             }).code(401);
         }
 
@@ -45,18 +44,18 @@ async function loginUserHandler(request, h) {
         if (!passwordMatch) {
             return h.response({
                 error: true,
-                message: 'Username atau password salah'
+                message: 'Email atau password salah'
             }).code(401);
         }
 
-        const token = generateToken({ id: user.userId, name: user.name });
+        const token = generateToken({ id: user.userId, email: user.email });
 
         return h.response({
             error: false,
             message: 'Login berhasil',
             loginResult: {
                 userId: user.userId,
-                name: user.name,
+                username: user.username,
                 token
             }
         }).code(200);

@@ -8,13 +8,12 @@ async function deletePost(request, h) {
     if (!userData) {
         return h.response({
             status: 'fail',
-            message: 'Invalid or missing token'
+            message: 'Invalid or missing token please re-login'
         }).code(401);
     }
 
     const { postId, URL_Image } = request.payload;
 
-    // file url
     const parsedUrl = new URL(URL_Image);
     const pathParts = parsedUrl.pathname.split('/').filter(part => part.length > 0);
     const objectName = decodeURIComponent(pathParts.slice(1).join('/'));

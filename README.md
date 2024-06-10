@@ -99,8 +99,7 @@ You can use Postman to test the API. You can download the Postman documentation 
 {
   "username": "yourname",
   "email": "yourname@example.com",
-  "password": "password",
-  "verifyPassword": "password"
+  "password": "password"
 }
 ```
 
@@ -139,6 +138,13 @@ Response Body:
 
 - **Logout**
   <pre>POST /logout</pre>
+  Request Body:
+
+````json
+{
+  "userId": "yourname",
+}
+
   Response Body:
 
 ```json
@@ -146,7 +152,7 @@ Response Body:
   "status": "success",
   "message": "Logout berhasil"
 }
-```
+````
 
 </details>
 

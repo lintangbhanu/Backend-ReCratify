@@ -1,15 +1,16 @@
 const getCraftVideo = require("../handlers/craft/craftVideoHandlers");
+const getYoutubeVideoDetail = require("../handlers/craft/detailVideoHandlers");
 const { getFavorite, addFavorite, deleteFavorite } = require("../handlers/craft/favoriteHandlers");
 
 const craftRoutes = [
     {
         method: 'GET',
-        path: '/craft-data/{label}',
+        path: '/allvideos/{label}',
         handler: getCraftVideo
     },
     {
         method: 'GET',
-        path: '/favorites/{userId}',
+        path: '/favorites',
         handler: getFavorite
     },
     {
@@ -21,7 +22,13 @@ const craftRoutes = [
         method: 'DELETE',
         path: '/favorites',
         handler: deleteFavorite
-    }
+    },
+    {
+        method: 'GET',
+        path: '/detailvideos/{youtubeId}',
+        handler: getYoutubeVideoDetail
+    },
+
 ];
 
 module.exports = craftRoutes;

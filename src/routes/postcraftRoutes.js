@@ -2,11 +2,13 @@ const getAllPostsHandler = require('../handlers/publish/allPosts');
 const getPostsByUser = require('../handlers/publish/userPosts');
 const deletePost = require('../handlers/publish/deletePosts');
 const postingHandler = require('../handlers/publish/Posting');
+const getPostDetail = require('../handlers/publish/detailPosts');
+
 
 const postCraftRoutes = [
     {
         method: 'POST',
-        path: '/publish',
+        path: '/upload',
         options: {
             payload: {
                 output: 'stream',
@@ -19,19 +21,24 @@ const postCraftRoutes = [
     },
     {
         method: 'DELETE',
-        path: '/publish',
+        path: '/deletepost',
         handler: deletePost
     },
     {
         method: 'GET',
-        path: '/publish',
+        path: '/allpost',
         handler: getAllPostsHandler
     },
     {
         method: 'GET',
-        path: '/publish/{userId}',
+        path: '/userpost',
         handler: getPostsByUser
     },
+    {
+        method: 'GET',
+        path: '/detailpost/{postId}',
+        handler: getPostDetail
+    }
 ];
 
 module.exports = postCraftRoutes;
