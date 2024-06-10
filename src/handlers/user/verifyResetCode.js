@@ -5,13 +5,13 @@ async function verifyResetCodeHandler(request, h) {
     const schema = Joi.object({
         email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: false } }).required()
             .messages({
-                'string.email': 'Format email tidak valid!',
-                'any.required': 'Email harus diisi!'
+                'string.email': 'Email invalid!',
+                'any.required': 'Email required!'
             }),
         resetCode: Joi.string().length(6).required()
             .messages({
-                'string.length': 'Kode reset harus 6 digit angka!',
-                'any.required': 'Kode reset harus diisi!'
+                'string.length': 'The reset code must be a 6 digit number!',
+                'any.required': 'Reset code required'
             })
     });
 
@@ -32,20 +32,20 @@ async function verifyResetCodeHandler(request, h) {
         if (!user) {
             return h.response({
                 status: 'fail',
-                message: 'User tidak ditemukan'
+                message: 'User not found'
             }).code(404);
         }
 
         if (resetCode !== user.resetCode) {
             return h.response({
                 status: 'fail',
-                message: 'Kode reset tidak valid'
+                message: 'Reset code invalid'
             }).code(400);
         }
 
         return h.response({
             status: 'success',
-            message: 'Kode reset valid'
+            message: 'Reset code valid'
         }).code(200);
 
     } catch (error) {

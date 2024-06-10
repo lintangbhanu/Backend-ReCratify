@@ -19,18 +19,18 @@ async function changePasswordHandler(request, h) {
         const schema = Joi.object({
             oldPassword: Joi.string().required()
                 .messages({
-                    'string.empty': 'Password lama harus diisi!',
-                    'any.required': 'Password lama harus diisi!'
+                    'string.empty': 'Old Password Required!',
+                    'any.required': 'Old Password Required!'
                 }),
             newPassword: Joi.string().min(6).required()
                 .messages({
-                    'string.min': 'Password baru harus memiliki panjang minimal {#limit} karakter!',
-                    'any.required': 'Password baru harus diisi!'
+                    'string.min': 'The new password must have a minimum length of {#limit} characters!',
+                    'any.required': 'New Password Required'
                 }),
             confirmPassword: Joi.string().valid(Joi.ref('newPassword')).required()
                 .messages({
-                    'any.only': 'Konfirmasi password baru tidak cocok dengan password baru!',
-                    'any.required': 'Konfirmasi password baru harus diisi!'
+                    'any.only': 'Password are not match!',
+                    'any.required': 'Verify Password Required!'
                 })
         });
 

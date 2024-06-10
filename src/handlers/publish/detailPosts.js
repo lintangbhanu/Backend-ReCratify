@@ -40,7 +40,7 @@ async function getPostDetail(request, h) {
 
         return h.response({
             status: 'success',
-            message: 'Berhasil mengambil detail postingan',
+            message: 'Successfully retrieved post details',
             data: postData
         }).code(200);
     } catch (error) {

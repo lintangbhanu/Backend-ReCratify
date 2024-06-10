@@ -6,17 +6,17 @@ async function resetPasswordHandler(request, h) {
     const schema = Joi.object({
         email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: false } }).required()
             .messages({
-                'string.email': 'Format email tidak valid!',
-                'any.required': 'Email harus diisi!'
+                'string.email': 'Email invalid',
+                'any.required': 'Email required'
             }),
         newPassword: Joi.string().min(6).required()
             .messages({
-                'string.min': 'Password harus memiliki panjang minimal {#limit} karakter!',
-                'any.required': 'Password harus diisi!'
+                'string.min': 'Password must have a minimum length of {#limit} characters!',
+                'any.required': 'Password required'
             }),
         resetCode: Joi.string().required()
             .messages({
-                'any.required': 'Reset code harus diisi!'
+                'any.required': 'Reset code required'
             })
     });
 
@@ -37,14 +37,14 @@ async function resetPasswordHandler(request, h) {
         if (!user) {
             return h.response({
                 status: 'fail',
-                message: 'User tidak ditemukan'
+                message: 'User not found'
             }).code(404);
         }
 
         if (user.resetCode !== resetCode) {
             return h.response({
                 status: 'fail',
-                message: 'Reset code tidak valid'
+                message: 'Reset code invalid'
             }).code(400);
         }
 
@@ -54,7 +54,7 @@ async function resetPasswordHandler(request, h) {
 
         return h.response({
             status: 'success',
-            message: 'Password berhasil direset'
+            message: 'Password reset was successful'
         }).code(200);
 
     } catch (error) {

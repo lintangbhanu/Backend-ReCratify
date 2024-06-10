@@ -6,8 +6,8 @@ async function forgotPasswordHandler(request, h) {
     const schema = Joi.object({
         email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: false } }).required()
             .messages({
-                'string.email': 'Format email tidak valid!',
-                'any.required': 'Email harus diisi!'
+                'string.email': 'Email invalid',
+                'any.required': 'Email required!'
             })
     });
 
@@ -28,7 +28,7 @@ async function forgotPasswordHandler(request, h) {
         if (!user) {
             return h.response({
                 status: 'fail',
-                message: 'Email tidak terdaftar!'
+                message: 'Email not registered!'
             }).code(404);
         }
 
@@ -47,7 +47,7 @@ async function forgotPasswordHandler(request, h) {
 
         return h.response({
             status: 'success',
-            message: 'Kode reset telah dikirim ke email Anda.'
+            message: 'A reset code has been sent to your email.'
         }).code(200);
 
     } catch (error) {

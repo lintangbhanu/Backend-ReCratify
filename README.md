@@ -17,7 +17,7 @@ Before running the application, make sure you have the following installed on yo
 # Tech We Use in Capstone Project
 
 - Hapi.js (Node.js Framework)
-- MySQL (Database)
+- MySQL (DBMS)
 - Sequelize (Object Relational Mapper)
 - nanoid (Unique ID Generator)
 - bcrypt (Password Hashing)
@@ -25,7 +25,7 @@ Before running the application, make sure you have the following installed on yo
 - jsonwebtoken (JWT Token)
 - nodemailer (Email Services)
 - Sequelize (Object Relational Mapper)
-- ????? (Deployment)
+- Cloud Run (Deployment)
 - Cloud SQL (Database)
 - Cloud Storage (Image Storage)
 ```
@@ -73,12 +73,12 @@ To run the API on your local computer, follow these steps:
 
 5.  Start the server
 
-```bash
-npm start
-```
+    ```bash
+    npm start
+    ```
 
-6. The API will be running on http://localhost:3000.
-7. [You can test the API using Postman or any other API testing tool.](#endpoints)
+6.  The API will be running on http://localhost:3000.
+7.  [You can test the API using Postman or any other API testing tool.](#endpoints)
 
 ## Endpoints
 
@@ -93,66 +93,64 @@ You can use Postman to test the API. You can download the Postman documentation 
 
 - **Register**
   <pre>POST /register</pre>
+
   Request Body:
 
-```json
-{
-  "username": "yourname",
-  "email": "yourname@example.com",
-  "password": "password"
-}
-```
-
-Response Body:
-
-```json
-{
-  "status": "success",
-  "message": "Registrasi berhasil dilakukan!"
-}
-```
-
-- **Login**
-  <pre>POST /login</pre>
-  Request Body:
-
-```json
-{
-  "username": "yourname",
-  "password": "password"
-}
-```
-
-Response Body:
-
-```json
-{
-  "error": false,
-  "message": "Login berhasil",
-  "loginResult": {
-    "userId": "73--_kblXDg",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjczLS1fa2JsWERnIiwiaWF0IjoxNzE3NjAxMjA0LCJleHAiOjE3MTc4NjA0MDR9.1ViSuoQR-AtIN22J83nmGwzqrtSwbsP2HcLF85sFHtk"
+  ```json
+  {
+    "username": "yourname",
+    "email": "yourname@example.com",
+    "password": "password"
   }
-}
-```
-
-- **Logout**
-  <pre>POST /logout</pre>
-  Request Body:
-
-````json
-{
-  "userId": "yourname",
-}
+  ```
 
   Response Body:
 
-```json
-{
-  "status": "success",
-  "message": "Logout berhasil"
-}
-````
+  ```json
+  {
+    "status": "success",
+    "message": "Registration successful!"
+  }
+  ```
+
+- **Login**
+  <pre>POST /login</pre>
+
+  Request Body:
+
+  ```json
+  {
+    "email": "yourname@example.com",
+    "password": "password"
+  }
+  ```
+
+  Response Body:
+
+  ```json
+  {
+    "error": false,
+    "message": "Login berhasil",
+    "loginResult": {
+      "userId": "fJ_CD4OXvhD",
+      "username": "yourname",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZKX0NENE9YdmhEIiwiZW1haWwiOiJ5b3VybmFtZUBleGFtcGxlLmNvbSIsImlhdCI6MTcxODAzMTg4NywiZXhwIjoxNzE4MTE4Mjg3fQ.dbqsLVD8Q0s45JfbghOwCAOckNmQfOnB00txjtJMvqA"
+    }
+  }
+  ```
+
+- **Logout**
+  <pre>POST /logout</pre>
+  <pre>Authorization: Token</pre>
+
+  Response Body:
+
+  ```json
+  {
+    "status": "success",
+    "message": "Logout successful"
+  }
+  ```
 
 </details>
 
@@ -161,61 +159,89 @@ Response Body:
 
 - **Forgot Password**
   <pre>POST /forgotpassword</pre>
+
   Request Body:
 
-```json
-{
-  "email": "yourname@gmail.com"
-}
-```
+  ```json
+  {
+    "email": "yourname@example.com"
+  }
+  ```
 
-Response Body:
+  Response Body:
 
-```json
-{
-  "status": "success",
-  "message": "Kode reset telah dikirim ke email Anda."
-}
-```
+  ```json
+  {
+    "status": "success",
+    "message": "A reset code has been sent to your email."
+  }
+  ```
 
 - **Verify Code**
   <pre>POST /verifycode</pre>
+
   Request Body:
 
-```json
-{
-  "email": "yourname@gmail.com"
-}
-```
+  ```json
+  {
+    "email": "yourname@example.com",
+    "resetCode": "123456"
+  }
+  ```
 
-Response Body:
+  Response Body:
 
-```json
-{
-  "email": "yourname@example.com",
-  "resetCode": "123456"
-}
-```
+  ```json
+  {
+    "status": "success",
+    "message": "Reset code valid"
+  }
+  ```
 
 - **Reset Password**
   <pre>POST /resetpassword</pre>
+
   Request Body:
 
-```json
-{
-  "email": "yourname@example.com",
-  "newPassword": "newPassword"
-}
-```
+  ```json
+  {
+    "email": "yourname@example.com",
+    "newPassword": "bhanu123",
+    "resetCode": "123456"
+  }
+  ```
 
-Response Body:
+  Response Body:
 
-```json
-{
-  "status": "success",
-  "message": "Password berhasil direset"
-}
-```
+  ```json
+  {
+    "status": "success",
+    "message": "Password reset was successful"
+  }
+  ```
+
+- **Change Password**
+  <pre>POST /changepassword</pre>
+  <pre>Authorization: Token</pre>
+
+  Request Body:
+
+  ```json
+  {
+    "oldPassword": "oldPassword",
+    "newPassword": "newPassword",
+    "confirmPassword": "newPassword"
+  }
+  ```
+
+  Response Body:
+
+  ```json
+  {
+    "status": "success",
+    "message": "Password changed successfully"
+  }
+  ```
 
 </details>
 
@@ -223,209 +249,169 @@ Response Body:
 <summary>Youtube Craft</summary>
 
 - **Get Craft Video**
-    <pre>POST /craft-data/{{Craft}}</pre>
-    <pre>Authorization: Token</pre>
+  <pre>POST /allvideos/{{waste}}</pre>
+  <pre>Authorization: Token</pre>
+
   Response Body:
 
-```json
-{
-  "status": "success",
-  "label": "cans",
-  "data": [
-    {
-      "Youtube_ID": "26DIw3itV5k",
-      "Snippet": {
-        "Title": "Ide Kreatif Kaleng Bekas jadi Wadah Serbaguna || Tempat Pensil dari Kaleng Bekas",
-        "URL_Thumbnail": "https://img.youtube.com/vi/26DIw3itV5k/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=26DIw3itV5k"
+  ```json
+  {
+    "status": "success",
+    "label": "plastic-bag",
+    "videos": [
+      {
+        "Youtube_ID": "4r9tLvMVIKM",
+        "Title": "Turning Plastic Trash Into Luxury Bags | One Small Step",
+        "URL_Thumbnail": "https://img.youtube.com/vi/4r9tLvMVIKM/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=4r9tLvMVIKM"
+      },
+      {
+        "Youtube_ID": "5JNe-hce0sY",
+        "Title": "How To Make Plastic Bag Sleeping Mats (Where You Live)",
+        "URL_Thumbnail": "https://img.youtube.com/vi/5JNe-hce0sY/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=5JNe-hce0sY"
+      },
+      {
+        "Youtube_ID": "fLEkneZS6-0",
+        "Title": "Flowers Making With Plastic Carry Bags | DIY | Carry Bags Re Use Ideas | Best Out Of Waste",
+        "URL_Thumbnail": "https://img.youtube.com/vi/fLEkneZS6-0/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=fLEkneZS6-0"
+      },
+      {
+        "Youtube_ID": "iOIP_qXNsoU",
+        "Title": "26 ORIGINAL WAYS TO USE PLASTIC BAGS",
+        "URL_Thumbnail": "https://img.youtube.com/vi/iOIP_qXNsoU/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=iOIP_qXNsoU"
+      },
+      {
+        "Youtube_ID": "j-7grMXIXs0",
+        "Title": "Beginners' Guide to Plastic Bag Recycling - How to Make a Wallet",
+        "URL_Thumbnail": "https://img.youtube.com/vi/j-7grMXIXs0/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=j-7grMXIXs0"
+      },
+      {
+        "Youtube_ID": "lTT2utfcHF0",
+        "Title": "BESI tas belanja Plastik, Anda tidak akan percaya dengan hasil yang luar biasa. ide daur ulang",
+        "URL_Thumbnail": "https://img.youtube.com/vi/lTT2utfcHF0/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=lTT2utfcHF0"
+      },
+      {
+        "Youtube_ID": "qTrsFgGBwcs",
+        "Title": "How to make FABRIC from PLASTIC grocery bags - Upcycling Plastic",
+        "URL_Thumbnail": "https://img.youtube.com/vi/qTrsFgGBwcs/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=qTrsFgGBwcs"
+      },
+      {
+        "Youtube_ID": "r5hehRmMfEk",
+        "Title": "15 AWESOME DIY CRAFTS WITH PLASTIC BAGS",
+        "URL_Thumbnail": "https://img.youtube.com/vi/r5hehRmMfEk/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=r5hehRmMfEk"
+      },
+      {
+        "Youtube_ID": "w-Ud0SzgFHc",
+        "Title": "18 PLASTIC BAG HACKS AND IDEAS",
+        "URL_Thumbnail": "https://img.youtube.com/vi/w-Ud0SzgFHc/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=w-Ud0SzgFHc"
+      },
+      {
+        "Youtube_ID": "y6-uY-w1lVI",
+        "Title": "DIY Basket Bag from Plastic | Upcycling Crafts for Eco-Friendly Handmade Bags",
+        "URL_Thumbnail": "https://img.youtube.com/vi/y6-uY-w1lVI/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=y6-uY-w1lVI"
       }
-    },
-    {
-      "Youtube_ID": "7gAQzBSqNkA",
-      "Snippet": {
-        "Title": "18 Genius Tin Can Upcycling Ideas: Transforming Trash into Treasure",
-        "URL_Thumbnail": "https://img.youtube.com/vi/7gAQzBSqNkA/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=7gAQzBSqNkA"
-      }
-    },
-    {
-      "Youtube_ID": "A3wLKpZi76w",
-      "Snippet": {
-        "Title": "Daur Ulang Kaleng Bekas | Ide Kreatif Dari Kaleng Bekas | DIY",
-        "URL_Thumbnail": "https://img.youtube.com/vi/A3wLKpZi76w/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=A3wLKpZi76w"
-      }
-    },
-    {
-      "Youtube_ID": "gsHs1kb7m-k",
-      "Snippet": {
-        "Title": "Recycle cans into Airplane | Recycle Craft",
-        "URL_Thumbnail": "https://img.youtube.com/vi/gsHs1kb7m-k/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=gsHs1kb7m-k"
-      }
-    },
-    {
-      "Youtube_ID": "iTWJxTXItV4",
-      "Snippet": {
-        "Title": "SANGAT BERGUNA! Anda tidak akan membuang Kaleng ke tempat sampah setelah mengetahui ide ini.",
-        "URL_Thumbnail": "https://img.youtube.com/vi/iTWJxTXItV4/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=iTWJxTXItV4"
-      }
-    },
-    {
-      "Youtube_ID": "KLM8zx2E72k",
-      "Snippet": {
-        "Title": "cara membuat bunga dari kaleng bekas",
-        "URL_Thumbnail": "https://img.youtube.com/vi/KLM8zx2E72k/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=KLM8zx2E72k"
-      }
-    },
-    {
-      "Youtube_ID": "MObulHcfPWs",
-      "Snippet": {
-        "Title": "Cara Membuat Motor Mainan Dari Kaleng Bekas",
-        "URL_Thumbnail": "https://img.youtube.com/vi/MObulHcfPWs/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=MObulHcfPWs"
-      }
-    },
-    {
-      "Youtube_ID": "x_7HuUJ7Ifo",
-      "Snippet": {
-        "Title": "Cara membuat miniatur drum set dari kaleng bekas",
-        "URL_Thumbnail": "https://img.youtube.com/vi/x_7HuUJ7Ifo/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=x_7HuUJ7Ifo"
-      }
-    },
-    {
-      "Youtube_ID": "Z-uYoU3UljU",
-      "Snippet": {
-        "Title": "Cara Buat Celengan dari Kaleng Bekas || DIY Celengan",
-        "URL_Thumbnail": "https://img.youtube.com/vi/Z-uYoU3UljU/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=Z-uYoU3UljU"
-      }
-    },
-    {
-      "Youtube_ID": "ZhXq3oOYLyA",
-      "Snippet": {
-        "Title": "HOW TO TURN TIN CANS INTO BEAUTIFUL DECOR",
-        "URL_Thumbnail": "https://img.youtube.com/vi/ZhXq3oOYLyA/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=ZhXq3oOYLyA"
-      }
+    ]
+  }
+  ```
+
+- **Get Detail Video**
+  <pre>POST /detailvideos/{{postId}}</pre>
+  <pre>Authorization: Token</pre>
+
+  Response Body:
+
+  ```json
+  {
+    "status": "success",
+    "Video": {
+      "Youtube_ID": "HBXjr982vDI",
+      "label": "Plastic-Bottle",
+      "Title": "Ide Kreatif Membuat Bunga dari Botol Bekas",
+      "URL_Thumbnail": "https://img.youtube.com/vi/HBXjr982vDI/hqdefault.jpg",
+      "URL_Video": "https://www.youtube.com/watch?v=HBXjr982vDI"
     }
-  ]
-}
-```
+  }
+  ```
 
 - **Add Favorite**
   <pre>POST /favorites</pre>
   <pre>Authorization: Token</pre>
+
   Request Body:
 
-```json
-{
-  "userId": "W381C_FfLhJ",
-  "label": "cans",
-  "Youtube_ID": "ZhXq3oOYLyA"
-}
-```
+  ```json
+  {
+    "label": "plastic-bottle",
+    "Youtube_ID": "iCDFDW_VCa8"
+  }
+  ```
 
-Response Body:
-
-```json
-{
-  "status": "success",
-  "message": "Video successfully added to favorites list!"
-}
-```
-
-- **Get User Favorite**
-  <pre>GET /favorites/{{userId}}</pre>
-  Authorization: Token
   Response Body:
 
-```json
-{
-  "status": "success",
-  "favorites": [
-    {
-      "Youtube_ID": "JQocEeIuKxM",
-      "label": "Plastic-Bottle",
-      "Snippet": {
-        "Title": "Cara Membuat Celengan Dari Botol Bekas Yang Bikin Tetangga Nyinyir || Ide Kreatif",
-        "URL_Thumbnail": "https://img.youtube.com/vi/JQocEeIuKxM/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=JQocEeIuKxM"
+  ```json
+  {
+    "status": "success",
+    "message": "Video successfully added to favorites list!"
+  }
+  ```
+
+- **Get User Favorite**
+  <pre>GET /favorites</pre>
+  <pre>Authorization: Token</pre>
+
+  Response Body:
+
+  ```json
+  {
+    "status": "success",
+    "userId": "fJ_CD4OXvhD",
+    "favorites": [
+      {
+        "Youtube_ID": "iCDFDW_VCa8",
+        "label": "Plastic-Bottle",
+        "Title": "From Plastic Bottle to Plane | Kreasi dari botol bekas",
+        "URL_Thumbnail": "https://img.youtube.com/vi/iCDFDW_VCa8/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=iCDFDW_VCa8"
+      },
+      {
+        "Youtube_ID": "5JNe-hce0sY",
+        "Title": "How To Make Plastic Bag Sleeping Mats (Where You Live)",
+        "URL_Thumbnail": "https://img.youtube.com/vi/5JNe-hce0sY/hqdefault.jpg",
+        "URL_Video": "https://www.youtube.com/watch?v=5JNe-hce0sY"
       }
-    },
-    {
-      "Youtube_ID": "JsltDFdXETg",
-      "label": "Glass-Bottle",
-      "Snippet": {
-        "Title": "pressed flower || kerajinan dari botol kaca bekas",
-        "URL_Thumbnail": "https://img.youtube.com/vi/JsltDFdXETg/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=JsltDFdXETg"
-      }
-    },
-    {
-      "Youtube_ID": "L0sC4NzsslY",
-      "label": "Cardbox",
-      "Snippet": {
-        "Title": "30 COOL CARDBOARD CRAFTS AND IDEAS",
-        "URL_Thumbnail": "https://img.youtube.com/vi/L0sC4NzsslY/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=L0sC4NzsslY"
-      }
-    },
-    {
-      "Youtube_ID": "3j80OY0Ns2g",
-      "label": "E-Waste",
-      "Snippet": {
-        "Title": "emas, dari limbah elektronik | gold, from electronic waste",
-        "URL_Thumbnail": "https://img.youtube.com/vi/3j80OY0Ns2g/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=3j80OY0Ns2g"
-      }
-    },
-    {
-      "Youtube_ID": "5G_fqVV-cFo",
-      "label": "Vegetation",
-      "Snippet": {
-        "Title": "Kreatif! Daun Kering Disulap Jadi Kerajinan Beromset Puluhan Juta Rupiah",
-        "URL_Thumbnail": "https://img.youtube.com/vi/5G_fqVV-cFo/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=5G_fqVV-cFo"
-      }
-    },
-    {
-      "Youtube_ID": "ZhXq3oOYLyA",
-      "label": "Cans",
-      "Snippet": {
-        "Title": "HOW TO TURN TIN CANS INTO BEAUTIFUL DECOR",
-        "URL_Thumbnail": "https://img.youtube.com/vi/ZhXq3oOYLyA/hqdefault.jpg",
-        "URL_Video": "https://www.youtube.com/watch?v=ZhXq3oOYLyA"
-      }
-    }
-  ]
-}
-```
+    ]
+  }
+  ```
 
 - **Delete Favorite**
   <pre>DELETE /favorites</pre>
   <pre>Authorization: Token</pre>
+
   Request Body:
 
-```json
-{
-  "userId": "W381C_FfLhJ",
-  "label": "Cans",
-  "Youtube_ID": "ZhXq3oOYLyA"
-}
-```
+  ```json
+  {
+    "Youtube_ID": "iCDFDW_VCa8"
+  }
+  ```
 
-Response Body:
+  Response Body:
 
-```json
-{
-  "status": "success",
-  "message": "Video successfully removed from favorites list!"
-}
-```
+  ```json
+  {
+    "status": "success",
+    "message": "Favorite video successfully removed!"
+  }
+  ```
 
 </details>
 
@@ -433,154 +419,154 @@ Response Body:
 <summary>Publish</summary>
 
 - **Upload Craft**
-  <pre>POST /publish</pre>
+  <pre>POST /upload</pre>
   <pre>Authorization: Token</pre>
+  <pre>Content-Type: multipart/form-data</pre>
+
   Request Body:
 
-```json
-{
-  "userid": "W381C_FfLhJ",
-  "title": "Vas Bunga Botol Kaca",
-  "description": "Caranya adalah.......",
-  "file": "1717604096234_f54eb8a70d58c1c8dbce0a8f739292cb.jpg"
-}
-```
-
-Response Body:
-
-```json
-{
-  "message": "File uploaded successfully",
-  "data": {
-    "postId": "6BOOlALQFju",
-    "userId": "W381C_FfLhJ",
-    "title": "Frame Foto Daur Ulang",
-    "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717604096234_f54eb8a70d58c1c8dbce0a8f739292cb.jpg",
-    "description": "Caranya adalah......."
+  ```json
+  {
+    "title": "Vas Bunga Botol Kaca",
+    "description": "Caranya adalah.......",
+    "file": "VasBotolKaca.jpg"
   }
-}
-```
+  ```
+
+  Response Body:
+
+  ```json
+  {
+    "message": "File uploaded successfully",
+    "data": {
+      "postId": "v7nrQccpwx0",
+      "userId": "fJ_CD4OXvhD",
+      "title": "Vas Bunga Botol Kaca",
+      "URL_Image": "https://storage.googleapis.com/yourBucket/VasBotolKaca.jpg",
+      "description": "Caranya adalah......."
+    }
+  }
+  ```
 
 - **Get All Post**
-  <pre>GET /publish</pre>
-  Authorization: Token
+  <pre>GET /allpost</pre>
+  <pre>Authorization: Token</pre>
+
   Response Body:
 
-```json
-{
-  "status": "success",
-  "message": "Berhasil mengambil semua data postingan karya!",
-  "data": [
-    {
-      "postId": "6BOOlALQFju",
-      "userId": "W381C_FfLhJ",
-      "title": "Frame Foto Daur Ulang",
-      "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717604096234_f54eb8a70d58c1c8dbce0a8f739292cb.jpg",
-      "description": "Caranya adalah.......",
-      "User": {
-        "username": "unta"
+  ```json
+  {
+    "status": "success",
+    "message": "Successfully retrieved all post data!",
+    "data": [
+      {
+        "postId": "v7nrQccpwx0",
+        "userId": "fJ_CD4OXvhD",
+        "username": "yourname",
+        "title": "Vas Bunga Botol Kaca",
+        "URL_Image": "https://storage.googleapis.com/yourBucket/VasBotolKaca.jpg",
+        "description": "Caranya adalah......."
+      },
+      {
+        "postId": "Bo6pthLiP2Y",
+        "userId": "HfXHKh01ccG",
+        "username": "Jack Sparrow",
+        "title": "Pupuk kompos dari sisa makanan",
+        "URL_Image": "https://storage.googleapis.com/yourBucket/image1.jpg",
+        "description": "Caranya adalah......."
+      },
+      {
+        "postId": "lcHYIDPV48J",
+        "userId": "WPL8mGNtxcV",
+        "username": "Unta",
+        "title": "Miniatur motor dari kaleng",
+        "URL_Image": "https://storage.googleapis.com/yourBucket/image2.jpg",
+        "description": "Caranya adalah......."
       }
-    },
-    {
-      "postId": "9lpc8Ij1dSu",
-      "userId": "cKjFks44HTb",
-      "title": "Mobil dari Botol Plastik",
-      "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717604217320_f54eb8a70d58c1c8dbce0a8f739292cb.jpg",
-      "description": "Caranya adalah.......",
-      "User": {
-        "username": "mantul"
-      }
-    },
-    {
-      "postId": "9QCQjCrfFQ-",
-      "userId": "cKjFks44HTb",
+    ]
+  }
+  ```
+
+- **Get Detail Post**
+  <pre>GET /detailpost/{{postId}}</pre>
+  <pre>Authorization: Token</pre>
+
+  Response Body:
+
+  ```json
+  {
+    "status": "success",
+    "message": "Successfully retrieved post details",
+    "data": {
+      "postId": "v7nrQccpwx0",
+      "userId": "fJ_CD4OXvhD",
+      "username": "yourname",
       "title": "Vas Bunga Botol Kaca",
-      "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717604244220_f54eb8a70d58c1c8dbce0a8f739292cb.jpg",
-      "description": "Caranya adalah.......",
-      "User": {
-        "username": "mantul"
-      }
-    },
-    {
-      "postId": "cijW0NeDRnZ",
-      "userId": "W381C_FfLhJ",
-      "title": "Vas Bunga Plastik",
-      "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717604070259_f54eb8a70d58c1c8dbce0a8f739292cb.jpg",
-      "description": "Caranya adalah.......",
-      "User": {
-        "username": "unta"
-      }
-    },
-    {
-      "postId": "j3632Hq5Pfr",
-      "userId": "W381C_FfLhJ",
-      "title": "Kincir Angin Kaleng",
-      "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717603807258_f54eb8a70d58c1c8dbce0a8f739292cb.jpg",
-      "description": "Caranya adalah.......",
-      "User": {
-        "username": "unta"
-      }
+      "URL_Image": "https://storage.googleapis.com/yourBucket/VasBotolKaca.jpg",
+      "description": "Caranya adalah......."
     }
-  ]
-}
-```
+  }
+  ```
 
 - **Get User Post**
-  <pre>GET /publish/{{userId}}</pre>
+  <pre>GET /userpost</pre>
   <pre>Authorization: Token</pre>
+
   Response Body:
 
-```json
-{
-  "status": "success",
-  "message": "Successfully get craft posts by user: unta!",
-  "userId": "W381C_FfLhJ",
-  "data": [
-    {
-      "postId": "6BOOlALQFju",
-      "title": "Frame Foto Daur Ulang",
-      "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717604096234_f54eb8a70d58c1c8dbce0a8f739292cb.jpg",
-      "description": "Caranya adalah.......",
-      "createdAt": "2024-06-05T16:14:57.000Z"
-    },
-    {
-      "postId": "cijW0NeDRnZ",
-      "title": "Vas Bunga Plastik",
-      "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717604070259_f54eb8a70d58c1c8dbce0a8f739292cb.jpg",
-      "description": "Caranya adalah.......",
-      "createdAt": "2024-06-05T16:14:31.000Z"
-    },
-    {
-      "postId": "j3632Hq5Pfr",
-      "title": "Kincir Angin Kaleng",
-      "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717603807258_f54eb8a70d58c1c8dbce0a8f739292cb.jpg",
-      "description": "Caranya adalah.......",
-      "createdAt": "2024-06-05T16:10:09.000Z"
-    }
-  ]
-}
-```
+  ```json
+  {
+    "status": "success",
+    "message": "Successfully retrieved craft posts by user: yourname!",
+    "userId": "fJ_CD4OXvhD",
+    "totalPosts": 3,
+    "data": [
+      {
+        "postId": "v7nrQccpwx0",
+        "title": "Vas Bunga Botol Kaca",
+        "URL_Image": "https://storage.googleapis.com/yourBucket/VasBotolKaca.jpg",
+        "description": "Caranya adalah.......",
+        "createdAt": "2024-06-09T23:18:15.000Z"
+      },
+      {
+        "postId": "v7nrQwikln1",
+        "title": "TES FIKSSS",
+        "URL_Image": "https://storage.googleapis.com/yourBucket/VasBotolKaca.jpg",
+        "description": "Caranya adalah.......",
+        "createdAt": "2024-06-09T23:18:15.000Z"
+      },
+      {
+        "postId": "vwh7do8OC2l",
+        "title": "Vas Bunga Botol Kaca",
+        "URL_Image": "https://storage.googleapis.com/yourBucket/VasBotolKaca.jpg",
+        "description": "Caranya adalah.......",
+        "createdAt": "2024-06-09T23:15:45.000Z"
+      }
+    ]
+  }
+  ```
 
 - **Delete Post**
-  <pre>DELETE /publish</pre>
+  <pre>DELETE /deletepost</pre>
   <pre>Authorization: Token</pre>
+
   Request Body:
 
-```json
-{
-  "postId": "6BOOlALQFju",
-  "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717604070259_f54eb8a70d58c1c8dbce0a8f739292cb.jpg"
-}
-```
+  ```json
+  {
+    "postId": "6L-mKuuFILv",
+    "URL_Image": "https://storage.googleapis.com/craft-storage-recratify/1717974662941_f54eb8a70d58c1c8dbce0a8f739292cb.jpg"
+  }
+  ```
 
-Response Body:
+  Response Body:
 
-```json
-{
-  "status": "success",
-  "message": "Craft Post deleted successfully!"
-}
-```
+  ```json
+  {
+    "status": "success",
+    "message": "Craft Post deleted successfully!"
+  }
+  ```
 
 </details>
 

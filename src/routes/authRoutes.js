@@ -1,6 +1,6 @@
 const { registerUserHandler } = require("../handlers/auth/register");
 const { loginUserHandler } = require("../handlers/auth/login");
-const { logoutUserHandler } = require("../handlers/auth/Logout");
+const { logoutUserHandler } = require("../handlers/auth/logout");
 const { forgotPasswordHandler } = require("../handlers/user/forgotPassword");
 const { verifyResetCodeHandler } = require("../handlers/user/verifyResetCode");
 const { resetPasswordHandler } = require("../handlers/user/resetPassword");

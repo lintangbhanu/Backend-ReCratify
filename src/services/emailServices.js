@@ -9,7 +9,7 @@ async function sendRegisterEmail(email) {
             secure: false,
             auth: {
                 user: process.env.APP_USER,
-                pass: "xdgr fldb hcev pjxp"
+                pass: "ajod wlqg eqls arim"
             },
         });
 
@@ -37,7 +37,7 @@ async function sendResetEmail(email, resetCode) {
             secure: false,
             auth: {
                 user: process.env.APP_USER,
-                pass: "xdgr fldb hcev pjxp"
+                pass: "ajod wlqg eqls arim"
             },
         });
 
@@ -45,7 +45,7 @@ async function sendResetEmail(email, resetCode) {
             from: process.env.APP_USER,
             to: email,
             subject: 'Kode Reset Password',
-            text: `Kode reset Anda adalah: ${resetCode}. Kode ini berlaku selama 1 jam.`
+            text: `Your reset code is: ${resetCode}. This code is valid for 1 hour.`
         };
 
         await transporter.sendMail(mailOptions);
