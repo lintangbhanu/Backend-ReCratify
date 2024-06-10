@@ -63,12 +63,12 @@ To run the API on your local computer, follow these steps:
 4.  create your own database like this
 
     <a href="">
-      <img src="https://storage.googleapis.com/craft-storage-recratify/Dokumentasi/rc_db.png" />
+      <img src="https://drive.google.com/uc?id=1HD0vQtUV1oGvKQ7NVyN063ZxqI8BdW3y" />
     </a>
 
     <details>
     <summary>Databse Exported File</summary>
-    You can use exported file for your database. You can download the exported file <a href="https://drive.google.com/file/d/1CLu3uy8VBCzewzWjKV1OjT7StjRDzmBn/view?usp=sharing">HERE</a>
+    You can use exported file for your database. You can download the exported file <a href="https://drive.google.com/uc?export=download&id=1CLu3uy8VBCzewzWjKV1OjT7StjRDzmBn">HERE</a>
     </details>
 
 5.  Start the server
@@ -573,5 +573,5 @@ You can use Postman to test the API. You can download the Postman documentation 
 ## Architecture
 
 <a href="">
-    <img src="" />
+    <img src="https://drive.google.com/uc?id=1YM5pOa8Wmz4JluywHbR0jpmsKwQLk5Bk"/>
  </a>
